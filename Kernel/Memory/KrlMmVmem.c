@@ -311,7 +311,7 @@ private VAD* FindVADForVMAlloc(VAM* vam, Addr start, Size size, U64 access, UInt
 	{
 		curr = ListEntry(list, VAD, Lists);
 		vadcurrent = VADIsOkForVMAlloc(vam, curr, start, size, access, type);
-		if (NULL != vadcurrent)
+		if(NULL != vadcurrent)
 		{
 			return vadcurrent;
 		}
@@ -463,7 +463,7 @@ private Bool DelUserPMSADsForVMemUnMapping(VMS* vms, VPB* box, PMSAD* msad, Addr
 	ListForEach(pos, &box->PmsadLists)
 	{
 		tmpmsad = ListEntry(pos, PMSAD, Lists);
-		if (PMSADRetPAddr(tmpmsad) == phyadr)
+		if(PMSADRetPAddr(tmpmsad) == phyadr)
 		{
 			delmsad = tmpmsad;
 			ListDel(&tmpmsad->Lists);
@@ -575,7 +575,7 @@ private Bool KrlVMemFreeRealizeCore(VMS* vms, VAM* vam, Addr start, Size size)
 		goto out;
 	}
 
-    if ((delvad->Start < start) && (delvad->End > (start + (Addr)size)))
+    if((delvad->Start < start) && (delvad->End > (start + (Addr)size)))
 	{
 		newvad = NewVAD();
 		if(NULL == newvad)
@@ -729,9 +729,9 @@ private VAD* ForMappingFindVADOnVAM(VAM* vam, Addr vaddr)
 	VAD* vad = NULL;
 
     curr = vam->CurrVAD;
-	if (NULL != curr)
+	if(NULL != curr)
 	{
-		if ((vaddr >= curr->Start) && (vaddr < curr->End))
+		if((vaddr >= curr->Start) && (vaddr < curr->End))
 		{
 			return curr;
 		}
@@ -835,7 +835,7 @@ private Bool KrlVMemHandMappingFail(VMS* vms, VAM* vam, Addr vaddr)
 	}
 
 	phyadrs = KrlVMemMapping(vms, vad, vaddr, VMAP_MIN_SIZE, (0 | PML4E_US | PML4E_RW | PML4E_P));
-	if (NULL == phyadrs)
+	if(NULL == phyadrs)
 	{
 		rets = FALSE;
 		goto out;
