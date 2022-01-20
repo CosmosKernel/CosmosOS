@@ -84,9 +84,9 @@ public void HalShowVersion()
 
 private void FillRect(Pixl pix, UInt x, UInt y, UInt tx, UInt ty)
 {
-    for (UInt i = y; i < y + ty; i++)
+    for(UInt i = y; i < y + ty; i++)
     {
-        for (UInt j = x; j < x + tx; j++)
+        for(UInt j = x; j < x + tx; j++)
         {
             WritePixColor(HalGetDefGraphDataAddr(), (U32)j, (U32)i, pix);
         }
@@ -100,7 +100,7 @@ private void FillBitMAPFile(Char* bmfname)
     MachStartInfo* kmbsp = HalGetMachStartInfoAddr();
     U64 fadr = 0, fsz = 0;
     get_file_rvadrandsz(bmfname, kmbsp, &fadr, &fsz);
-    if (0 == fadr || 0 == fsz)
+    if(0 == fadr || 0 == fsz)
     {
         system_error("not bitmap file err\n");
     }
@@ -109,9 +109,9 @@ private void FillBitMAPFile(Char* bmfname)
     bmdp = (BMDBGR* )((UInt)img);
     Pixl pix;
     int k = 0, l = 0;
-    for (int j = 768; j >= 0; j--, l++)
+    for(int j = 768; j >= 0; j--, l++)
     {
-        for (int i = 0; i < 1024; i++)
+        for(int i = 0; i < 1024; i++)
         {
             pix = BGRA(bmdp[k].Red, bmdp[k].Green, bmdp[k].Blue);
             WritePixColor(kghp, i, j, pix);
@@ -141,7 +141,7 @@ private void HalBackGround()
     MachStartInfo* kmbsp = HalGetMachStartInfoAddr();
     U64 fadr = 0, fsz = 0;
     get_file_rvadrandsz("desktop1.bmp", kmbsp, &fadr, &fsz);
-    if (0 == fadr || 0 == fsz)
+    if(0 == fadr || 0 == fsz)
     {
         system_error("Cosmos background fail");
     }
@@ -150,9 +150,9 @@ private void HalBackGround()
     bmdp = (BMDBGR*)((UInt)img);
     Pixl pix;
     int k = 0, l = 0;
-    for (int j = 768; j >= 0; j--, l++)
+    for(int j = 768; j >= 0; j--, l++)
     {
-        for (int i = 0; i < 1024; i++)
+        for(int i = 0; i < 1024; i++)
         {
             pix = BGRA(bmdp[k].Red, bmdp[k].Green, bmdp[k].Blue);
             DRXWPixColor(kghp, i, j, pix);
@@ -169,7 +169,7 @@ public void HalLogo()
     MachStartInfo* kmbsp = HalGetMachStartInfoAddr();
     U64 fadr = 0, fsz = 0;
     get_file_rvadrandsz("logo.bmp", kmbsp, &fadr, &fsz);
-    if (0 == fadr || 0 == fsz)
+    if(0 == fadr || 0 == fsz)
     {
         system_error("logoerr");
     }
@@ -178,15 +178,15 @@ public void HalLogo()
     bmdp = (BMDBGR* )((UInt)img);
     Pixl pix;
     int k = 0, l = 0;
-    for (int j = 617; j >= 153; j--, l++)
+    for(int j = 617; j >= 153; j--, l++)
     {
-        for (int i = 402; i < 622; i++)
+        for(int i = 402; i < 622; i++)
         {
             pix = BGRA(bmdp[k].Red, bmdp[k].Green, bmdp[k].Blue);
             DRXWPixColor(kghp, i, j, pix);
             k++;
         }
-        if (l > 205)
+        if(l > 205)
         {
             die(0x80);
         }
@@ -212,7 +212,7 @@ public void BootVideoDeviceInit()
 private void BGAInit()
 {
     DefGraph* kghp = HalGetDefGraphDataAddr();
-    if (kghp->Mode != BGAMODE)
+    if(kghp->Mode != BGAMODE)
     {
         return;
     }
@@ -237,7 +237,7 @@ private void BGAInit()
 private void VBEInit()
 {
     DefGraph* kghp = HalGetDefGraphDataAddr();
-    if (kghp->Mode != VBEMODE)
+    if(kghp->Mode != VBEMODE)
     {
         return;
     }
@@ -261,9 +261,9 @@ private void VBEInit()
 
 private void FillGraph(DefGraph* kghp, Pixl pix)
 {
-    for (U64 y = 0; y < kghp->Y; y++)
+    for(U64 y = 0; y < kghp->Y; y++)
     {
-        for (U64 x = 0; x < kghp->X; x++)
+        for(U64 x = 0; x < kghp->X; x++)
         {
             WritePixColor(kghp, (U32)x, (U32)y, pix);
         }
@@ -295,13 +295,13 @@ private U32 Utf8ToUnicode(UTF8* utf, int* retuib)
 {
     U8 uhd = utf->UByte1, ubyt = 0;
     U32 ucode = 0, tmpuc = 0;
-    if (0x80 > uhd) //0xbf&&uhd<=0xbf
+    if(0x80 > uhd) //0xbf&&uhd<=0xbf
     {
         ucode = utf->UByte1 & 0x7f;
         *retuib = 1;
         return ucode;
     }
-    if (0xc0 <= uhd && uhd <= 0xdf) //0xdf
+    if(0xc0 <= uhd && uhd <= 0xdf) //0xdf
     {
         ubyt = utf->UByte1 & 0x1f;
         tmpuc |= ubyt;
@@ -310,7 +310,7 @@ private U32 Utf8ToUnicode(UTF8* utf, int* retuib)
         *retuib = 2;
         return ucode;
     }
-    if (0xe0 <= uhd && uhd <= 0xef) //0xef
+    if(0xe0 <= uhd && uhd <= 0xef) //0xef
     {
         ubyt = utf->UByte1 & 0x0f;
         tmpuc |= ubyt;
@@ -322,7 +322,7 @@ private U32 Utf8ToUnicode(UTF8* utf, int* retuib)
         *retuib = 3;
         return ucode;
     }
-    if (0xf0 <= uhd && uhd <= 0xf7) //0xf7
+    if(0xf0 <= uhd && uhd <= 0xf7) //0xf7
     {
         ubyt = utf->UByte1 & 0x7;
         tmpuc |= ubyt;
@@ -337,7 +337,7 @@ private U32 Utf8ToUnicode(UTF8* utf, int* retuib)
         *retuib = 4;
         return ucode;
     }
-    if (0xf8 <= uhd && uhd <= 0xfb) //0xfb
+    if(0xf8 <= uhd && uhd <= 0xfb) //0xfb
     {
         ubyt = utf->UByte1 & 0x3;
         tmpuc |= ubyt;
@@ -355,7 +355,7 @@ private U32 Utf8ToUnicode(UTF8* utf, int* retuib)
         *retuib = 5;
         return ucode;
     }
-    if (0xfc <= uhd && uhd <= 0xfd) //0xfd
+    if(0xfc <= uhd && uhd <= 0xfd) //0xfd
     {
         ubyt = utf->UByte1 & 0x1;
         tmpuc |= ubyt;
@@ -394,10 +394,10 @@ public void PutPixOneChar(DefGraph* kghp, U32 unicode, Pixl pix)
 {
     int y = 0, chwx = 0, chhx = 0, linb = 0;
     U8* charyp = NULL;
-    if (unicode == 10)
+    if(unicode == 10)
     {
         kghp->NextCharsX = 0;
-        if ((kghp->NextCharsY + kghp->LineSZ) > (kghp->Y - kghp->FontHigh))
+        if((kghp->NextCharsY + kghp->LineSZ) > (kghp->Y - kghp->FontHigh))
         {
             kghp->NextCharsY = 0;
             HalBackGround();
@@ -407,14 +407,14 @@ public void PutPixOneChar(DefGraph* kghp, U32 unicode, Pixl pix)
         return;
     }
     charyp = GetCharsInfo(kghp, unicode, &chwx, &chhx, &linb);
-    if (charyp == NULL)
+    if(charyp == NULL)
     {
         return;
     }
-    if ((kghp->NextCharsX + chwx) > (kghp->X - chwx))
+    if((kghp->NextCharsX + chwx) > (kghp->X - chwx))
     {
         kghp->NextCharsX = 0;
-        if ((kghp->NextCharsY + kghp->LineSZ) > (kghp->Y - kghp->FontHigh))
+        if((kghp->NextCharsY + kghp->LineSZ) > (kghp->Y - kghp->FontHigh))
         {
             kghp->NextCharsY = 0;
         }
@@ -425,23 +425,23 @@ public void PutPixOneChar(DefGraph* kghp, U32 unicode, Pixl pix)
     }
     U32 wpx = (U32)kghp->NextCharsX, wpy = (U32)kghp->NextCharsY;
 
-    for (int hx = 0; hx < chhx; hx++)
+    for(int hx = 0; hx < chhx; hx++)
     {
-        for (int btyi = 0, x = 0; btyi < linb; btyi++)
+        for(int btyi = 0, x = 0; btyi < linb; btyi++)
         {
             U8 bitmap = charyp[hx * linb + btyi];
-            if (bitmap == 0)
+            if(bitmap == 0)
             {
                 x += 8;
                 continue;
             }
-            for (int bi = 7; bi >= 0; bi--)
+            for(int bi = 7; bi >= 0; bi--)
             {
-                if (x >= chwx)
+                if(x >= chwx)
                 {
                     break;
                 }
-                if (((bitmap >> bi) & 1) == 1)
+                if(((bitmap >> bi) & 1) == 1)
                 {
                     WritePixColor(kghp, wpx + x, wpy + y, pix);
                 }
@@ -458,10 +458,10 @@ public void DRXPutPixOneChar(DefGraph* kghp, U32 unicode, Pixl pix)
 {
     int y = 0, chwx = 0, chhx = 0, linb = 0;
     U8* charyp = NULL;
-    if (unicode == 10)
+    if(unicode == 10)
     {
         kghp->NextCharsX = 0;
-        if ((kghp->NextCharsY + kghp->LineSZ) > (kghp->Y - kghp->FontHigh))
+        if((kghp->NextCharsY + kghp->LineSZ) > (kghp->Y - kghp->FontHigh))
         {
             kghp->NextCharsY = 0;
             HalBackGround();
@@ -471,14 +471,14 @@ public void DRXPutPixOneChar(DefGraph* kghp, U32 unicode, Pixl pix)
         return;
     }
     charyp = GetCharsInfo(kghp, unicode, &chwx, &chhx, &linb);
-    if (charyp == NULL)
+    if(charyp == NULL)
     {
         return;
     }
-    if ((kghp->NextCharsX + chwx) > (kghp->X - chwx))
+    if((kghp->NextCharsX + chwx) > (kghp->X - chwx))
     {
         kghp->NextCharsX = 0;
-        if ((kghp->NextCharsY + kghp->LineSZ) > (kghp->Y - kghp->FontHigh))
+        if((kghp->NextCharsY + kghp->LineSZ) > (kghp->Y - kghp->FontHigh))
         {
             kghp->NextCharsY = 0;
         }
@@ -489,23 +489,23 @@ public void DRXPutPixOneChar(DefGraph* kghp, U32 unicode, Pixl pix)
     }
     U32 wpx = (U32)kghp->NextCharsX, wpy = (U32)kghp->NextCharsY;
 
-    for (int hx = 0; hx < chhx; hx++)
+    for(int hx = 0; hx < chhx; hx++)
     {
-        for (int btyi = 0, x = 0; btyi < linb; btyi++)
+        for(int btyi = 0, x = 0; btyi < linb; btyi++)
         {
             U8 bitmap = charyp[hx * linb + btyi];
-            if (bitmap == 0)
+            if(bitmap == 0)
             {
                 x += 8;
                 continue;
             }
-            for (int bi = 7; bi >= 0; bi--)
+            for(int bi = 7; bi >= 0; bi--)
             {
-                if (x >= chwx)
+                if(x >= chwx)
                 {
                     break;
                 }
-                if (((bitmap >> bi) & 1) == 1)
+                if(((bitmap >> bi) & 1) == 1)
                 {
                     DRXWPixColor(kghp, wpx + x, wpy + y, pix);
                 }
@@ -527,11 +527,11 @@ public void HalDefStringWrite(Char* buf)
     DefGraph* kghp = HalGetDefGraphDataAddr();
     Pixl pix = kghp->DefFontPX;
     IF_NULL_RETURN(buf);
-    while (buf[chinx] != 0)
+    while(buf[chinx] != 0)
     {
         uc = Utf8ToUnicode((UTF8* )(&buf[chinx]), &chretnext);
         chinx += chretnext;
-        if (kghp->CharDefXW == 1)
+        if(kghp->CharDefXW == 1)
         {
             PutPixOneChar(kghp, uc, pix);
         }
@@ -540,7 +540,7 @@ public void HalDefStringWrite(Char* buf)
             DRXPutPixOneChar(kghp, uc, pix);
         }
     }
-    if (kghp->Flush == 1)
+    if(kghp->Flush == 1)
     {
         FlushVideoRam(kghp);
     }
@@ -594,7 +594,7 @@ private void BGADispNextBank(void* ghpdev)
     BGAWriteReg(VBE_DISPI_INDEX_Y_OFFSET, ofy);
     kghp->CurrDispBank = kghp->FvrmPhyAddr;
     kghp->FvrmPhyAddr++;
-    if (kghp->FvrmPhyAddr > kghp->Bank)
+    if(kghp->FvrmPhyAddr > kghp->Bank)
     {
         kghp->FvrmPhyAddr = 0;
     }
@@ -610,7 +610,7 @@ private void BGAFlush(void* ghpdev)
     U64 i = 0, j = 0;
     U64 e = kghp->X * kghp->Y * kghp->OnePixByte;
     //U64 k=e/8;
-    for (; i < e; i += 8)
+    for(; i < e; i += 8)
     {
         d[j] = s[j];
         j++;
@@ -633,7 +633,7 @@ private void BGAWritePix(void* ghpdev, Pixl pix, UInt x, UInt y)
 {
     DefGraph* kghp = (DefGraph*)ghpdev;
     U8* p24bas;
-    if (kghp->OnePixBits == 24)
+    if(kghp->OnePixBits == 24)
     {
         U64 p24adr = (x + (y * kghp->X)) * 3;
         p24bas = (U8* )((UInt)(p24adr + kghp->FvrmPhyAddr));
@@ -656,7 +656,7 @@ private void BGADXWritePix(void* ghpdev, Pixl pix, UInt x, UInt y)
 {
     DefGraph* kghp = (DefGraph*)ghpdev;
     U8* p24bas;
-    if (kghp->OnePixBits == 24)
+    if(kghp->OnePixBits == 24)
     {
         U64 p24adr = (x + (y * kghp->X)) * 3 * kghp->CurrDispBank;
         p24bas = (U8* )((UInt)(p24adr + kghp->FramPhyAddr));
@@ -696,7 +696,7 @@ private SInt BGASetXYOffset(void* ghpdev, UInt xoff, UInt yoff)
 
 private SInt BGAGetXY(void* ghpdev, UInt* rx, UInt* ry)
 {
-    if (rx == NULL || ry == NULL)
+    if(rx == NULL || ry == NULL)
     {
         return -1;
     }
@@ -710,7 +710,7 @@ private SInt BGAGetXY(void* ghpdev, UInt* rx, UInt* ry)
 
 private SInt BGAGetVWH(void* ghpdev, UInt* rvwt, UInt* rvhi)
 {
-    if (rvwt == NULL || rvhi == NULL)
+    if(rvwt == NULL || rvhi == NULL)
     {
         return -1;
     }
@@ -724,7 +724,7 @@ private SInt BGAGetVWH(void* ghpdev, UInt* rvwt, UInt* rvhi)
 
 private SInt BGAGetXYOffset(void* ghpdev, UInt* rxoff, UInt* ryoff)
 {
-    if (rxoff == NULL || ryoff == NULL)
+    if(rxoff == NULL || ryoff == NULL)
     {
         return -1;
     }
@@ -759,7 +759,7 @@ private void VBEFlush(void* ghpdev)
     U64* d = (U64* )((UInt)kghp->FramPhyAddr);
     U64 i = 0, j = 0;
     U64 e = kghp->X * kghp->Y * kghp->FvrmPhyAddr;
-    for (; i < e; i += 8)
+    for(; i < e; i += 8)
     {
         d[j] = s[j];
         j++;
@@ -781,7 +781,7 @@ private void VBEWritePix(void* ghpdev, Pixl pix, UInt x, UInt y)
 {
     DefGraph* kghp = (DefGraph* )ghpdev;
     U8* p24bas;
-    if (kghp->OnePixBits == 24)
+    if(kghp->OnePixBits == 24)
     {
         U64 p24adr = (x + (y * kghp->X)) * 3;
         p24bas = (U8* )((UInt)(p24adr + kghp->FvrmPhyAddr));
@@ -797,7 +797,6 @@ private void VBEWritePix(void* ghpdev, Pixl pix, UInt x, UInt y)
 
 private Pixl VBDXReadPix(void* ghpdev, UInt x, UInt y)
 {
-
     return 0;
 }
 
@@ -805,7 +804,7 @@ private void VBEDXWritePix(void* ghpdev, Pixl pix, UInt x, UInt y)
 {
     DefGraph* kghp = (DefGraph* )ghpdev;
     U8* p24bas;
-    if (kghp->OnePixBits == 24)
+    if(kghp->OnePixBits == 24)
     {
         U64 p24adr = (x + (y*  kghp->X))*  3;
         p24bas = (U8* )((UInt)(p24adr + kghp->FramPhyAddr));
