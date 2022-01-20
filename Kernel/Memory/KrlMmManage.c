@@ -215,7 +215,7 @@ private Bool NewOnePHYMSPaceArea(E820Map* e820, PHYMSPaceArea* area)
     default:
         break;
     }
-    if (0 == type)
+    if(0 == type)
     {
         return FALSE;
     }
@@ -490,7 +490,7 @@ public Bool KrlMmPHYMSPaceAreaInit()
 
     area = HalExPBootAllocMem((Size)(msinfo->E820NR * sizeof(PHYMSPaceArea)));
     IF_NULL_RETURN_FALSE(area);
-    for ( ;e820 != NULL; areanr++)
+    for( ;e820 != NULL; areanr++)
     {
         e820 = HalExPBootGetNextE820();
         NewOnePHYMSPaceArea(e820, &area[areanr]);
