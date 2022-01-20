@@ -433,7 +433,7 @@ private UInt FindContinuousPMSADsBlock(PABHList* abhlist, PMSAD** msadstart, PMS
     {
         tmpmsa = ListEntry(tmplst, PMSAD, Lists);
         rets = PMSADTowBlockIsOk(abhlist, start, end, tmpmsa, &tmpmsa[abhlist->InOrderPmsadNR - 1]);
-		if (2 == rets || 4 == rets)
+		if(2 == rets || 4 == rets)
 		{
 			blkms = tmpmsa;
 			blkme = &tmpmsa[abhlist->InOrderPmsadNR - 1];
