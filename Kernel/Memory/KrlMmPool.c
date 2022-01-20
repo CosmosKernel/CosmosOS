@@ -161,7 +161,7 @@ private KMemPool* ForAddrRetKMemPoolOnGMemPoolManage(GMemPoolManage* gmpm, void*
         if(NULL != gmpm->KMemPoolArr[i])
         {
             pool = gmpm->KMemPoolArr[i];
-            if ((pool->VAddrStart <= (Addr)addr) && ((Addr)addr < pool->VAddrEnd))
+            if((pool->VAddrStart <= (Addr)addr) && ((Addr)addr < pool->VAddrEnd))
             {
                 ListForEach(lists, &pool->PMSADsLists)
                 {
