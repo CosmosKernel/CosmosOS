@@ -319,7 +319,7 @@ KLINE void HalMemCopy(void* src, void* dest, UInt count)
 {
 
     U8 *ss = src, *sd = dest;
-    for (UInt i = 0; i < count; i++)
+    for(UInt i = 0; i < count; i++)
     {
         sd[i] = ss[i];
     }
@@ -328,28 +328,28 @@ KLINE void HalMemCopy(void* src, void* dest, UInt count)
 
 KLINE SInt HalM2MCopy(void* sadr, void* dadr, SInt len)
 {
-    if (NULL == sadr || NULL == dadr || 1 > len)
+    if(NULL == sadr || NULL == dadr || 1 > len)
     {
         return 0;
     }
     U8 *s = (U8 *)sadr, *d = (U8 *)dadr;
-    if (s < d)
+    if(s < d)
     {
-        for (SInt i = (len - 1); i >= 0; i--)
+        for(SInt i = (len - 1); i >= 0; i--)
         {
             d[i] = s[i];
         }
         return len;
     }
-    if (s > d)
+    if(s > d)
     {
-        for (SInt j = 0; j < len; j++)
+        for(SInt j = 0; j < len; j++)
         {
             d[j] = s[j];
         }
         return len;
     }
-    if (s == d)
+    if(s == d)
     {
         return len;
     }
@@ -359,7 +359,7 @@ KLINE SInt HalM2MCopy(void* sadr, void* dadr, SInt len)
 KLINE void HalMemSet(void *s, U8 c, UInt count)
 {
     U8 *st = s;
-    for (UInt i = 0; i < count; i++)
+    for(UInt i = 0; i < count; i++)
     {
         st[i] = c;
     }
