@@ -44,7 +44,7 @@ public void __attribute__((optnone)) HalDead(UInt count)
 
 public Addr HalVAddrToPAddr(Addr kvaddr)
 {
-    if (kvaddr < KRNL_MAP_VIRTADDRESS_START || kvaddr > KRNL_MAP_VIRTADDRESS_END)
+    if(kvaddr < KRNL_MAP_VIRTADDRESS_START || kvaddr > KRNL_MAP_VIRTADDRESS_END)
     {
         // system_error("virAddro_phyadr err\n");
         return KRNL_ADDR_ERROR;
@@ -54,7 +54,7 @@ public Addr HalVAddrToPAddr(Addr kvaddr)
 
 public Addr HalPAddrToVAddr(Addr kpaddr)
 {
-    if (kpaddr >= KRNL_MAP_PHYADDRESS_END)
+    if(kpaddr >= KRNL_MAP_PHYADDRESS_END)
     {
         // system_error("phyAddro_viradr err\n");
         return KRNL_ADDR_ERROR;
