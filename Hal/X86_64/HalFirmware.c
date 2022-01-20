@@ -74,7 +74,8 @@ private void SetCharsDXWFlush(U64 chardxw, U64 flush)
 
 public void HalShowVersion()
 {
-    Pixl bkpx = SetDefFontPx(BGRA(0xff, 0, 0));
+    Pixl bkpx = 0;
+    bkpx = SetDefFontPx(BGRA(0xff, 0, 0));
     KrlPrint(CosmosVersion);
     // KrlPrint("系统存在进程:%d个 系统空闲内存大小:%dMB\n", (UInt)osschedcls.scls_threadnr, (UInt)((memmgrob.mo_freepages << 12) >> 20));
     // KrlPrint("系统处理器工作模式:%d位 系统物理内存大小:%dMB\n", (UInt)kmachbsp.mb_cpumode, (UInt)(kmachbsp.mb_memsz >> 20));
@@ -96,19 +97,26 @@ private void FillRect(Pixl pix, UInt x, UInt y, UInt tx, UInt ty)
 
 private void FillBitMAPFile(Char* bmfname)
 {
-    DefGraph* kghp = HalGetDefGraphDataAddr();
-    MachStartInfo* kmbsp = HalGetMachStartInfoAddr();
+    DefGraph* kghp = NULL;
+    MachStartInfo* kmbsp = NULL;
     U64 fadr = 0, fsz = 0;
+    BMDBGR* bmdp = NULL;
+    U64 img = 0;
+    Pixl pix = 0;
+    int k = 0, l = 0;
+
+    kghp = HalGetDefGraphDataAddr();
+    kmbsp = HalGetMachStartInfoAddr();
+    
     get_file_rvadrandsz(bmfname, kmbsp, &fadr, &fsz);
     if(0 == fadr || 0 == fsz)
     {
         system_error("not bitmap file err\n");
     }
-    BMDBGR* bmdp;
-    U64 img = fadr + sizeof(BMFHead) + sizeof(BitMInfo);
+    
+    img = fadr + sizeof(BMFHead) + sizeof(BitMInfo);
     bmdp = (BMDBGR* )((UInt)img);
-    Pixl pix;
-    int k = 0, l = 0;
+    
     for(int j = 768; j >= 0; j--, l++)
     {
         for(int i = 0; i < 1024; i++)
@@ -125,9 +133,12 @@ private void FillBitMAPFile(Char* bmfname)
 private void SlouSreen(UInt hy)
 {
     UInt x, y, ofx, ofy;
-    DefGraph* kghp = HalGetDefGraphDataAddr();
+    DefGraph* kghp = NULL;
+
+    kghp = HalGetDefGraphDataAddr();
     BGAGetXYOffset(kghp, &x, &y);
     BGAGetVWH(kghp, &ofx, &ofy);
+    
     y += hy;
     ofy += hy;
     BGASetVWH(kghp, ofx, ofy);
@@ -137,19 +148,26 @@ private void SlouSreen(UInt hy)
 
 private void HalBackGround()
 {
-    DefGraph* kghp = HalGetDefGraphDataAddr();
-    MachStartInfo* kmbsp = HalGetMachStartInfoAddr();
+    DefGraph* kghp = NULL;
+    MachStartInfo* kmbsp = NULL;
     U64 fadr = 0, fsz = 0;
+    BMDBGR* bmdp = NULL;
+    U64 img = 0;
+    Pixl pix = 0;
+    int k = 0, l = 0;
+
+    kghp = HalGetDefGraphDataAddr();
+    kmbsp = HalGetMachStartInfoAddr();
+
     get_file_rvadrandsz("desktop1.bmp", kmbsp, &fadr, &fsz);
     if(0 == fadr || 0 == fsz)
     {
         system_error("Cosmos background fail");
     }
-    BMDBGR* bmdp;
-    U64 img = fadr + sizeof(BMFHead) + sizeof(BitMInfo);
+    
+    img = fadr + sizeof(BMFHead) + sizeof(BitMInfo);
     bmdp = (BMDBGR*)((UInt)img);
-    Pixl pix;
-    int k = 0, l = 0;
+    
     for(int j = 768; j >= 0; j--, l++)
     {
         for(int i = 0; i < 1024; i++)
@@ -165,19 +183,26 @@ private void HalBackGround()
 
 public void HalLogo()
 {
-    DefGraph* kghp = HalGetDefGraphDataAddr();
-    MachStartInfo* kmbsp = HalGetMachStartInfoAddr();
+    DefGraph* kghp = NULL; 
+    MachStartInfo* kmbsp = NULL;
     U64 fadr = 0, fsz = 0;
+    BMDBGR* bmdp = NULL;
+    U64 img = 0;
+    Pixl pix = 0;
+    int k = 0, l = 0;
+
+    kghp = HalGetDefGraphDataAddr();
+    kmbsp = HalGetMachStartInfoAddr();
+
     get_file_rvadrandsz("logo.bmp", kmbsp, &fadr, &fsz);
     if(0 == fadr || 0 == fsz)
     {
         system_error("logoerr");
     }
-    BMDBGR* bmdp;
-    U64 img = fadr + sizeof(BMFHead) + sizeof(BitMInfo);
+
+    img = fadr + sizeof(BMFHead) + sizeof(BitMInfo);
     bmdp = (BMDBGR* )((UInt)img);
-    Pixl pix;
-    int k = 0, l = 0;
+    
     for(int j = 617; j >= 153; j--, l++)
     {
         for(int i = 402; i < 622; i++)
@@ -211,7 +236,8 @@ public void BootVideoDeviceInit()
 
 private void BGAInit()
 {
-    DefGraph* kghp = HalGetDefGraphDataAddr();
+    DefGraph* kghp = NULL;
+    kghp = HalGetDefGraphDataAddr();
     if(kghp->Mode != BGAMODE)
     {
         return;
@@ -236,7 +262,8 @@ private void BGAInit()
 
 private void VBEInit()
 {
-    DefGraph* kghp = HalGetDefGraphDataAddr();
+    DefGraph* kghp = NULL;
+    kghp = HalGetDefGraphDataAddr();
     if(kghp->Mode != VBEMODE)
     {
         return;
@@ -382,7 +409,8 @@ private U32 Utf8ToUnicode(UTF8* utf, int* retuib)
 
 private U8* GetCharsInfo(DefGraph* kghp, U32 unicode, int* retchwx, int* retchhx, int* retlinb)
 {
-    FontData* fntp = (FontData* )((UInt)kghp->FontAddr);
+    FontData* fntp = NULL;
+    fntp = (FontData* )((UInt)kghp->FontAddr);
     *retchwx = fntp[unicode].FontWidth;
     *retchhx = fntp[unicode].FontHigh;
     *retlinb = fntp[unicode].FontByteSZ;
@@ -394,6 +422,7 @@ public void PutPixOneChar(DefGraph* kghp, U32 unicode, Pixl pix)
 {
     int y = 0, chwx = 0, chhx = 0, linb = 0;
     U8* charyp = NULL;
+    U32 wpx = 0, wpy = 0;
     if(unicode == 10)
     {
         kghp->NextCharsX = 0;
@@ -423,7 +452,8 @@ public void PutPixOneChar(DefGraph* kghp, U32 unicode, Pixl pix)
             kghp->NextCharsY += kghp->LineSZ;
         }
     }
-    U32 wpx = (U32)kghp->NextCharsX, wpy = (U32)kghp->NextCharsY;
+    wpx = (U32)kghp->NextCharsX;
+    wpy = (U32)kghp->NextCharsY;
 
     for(int hx = 0; hx < chhx; hx++)
     {
@@ -458,6 +488,7 @@ public void DRXPutPixOneChar(DefGraph* kghp, U32 unicode, Pixl pix)
 {
     int y = 0, chwx = 0, chhx = 0, linb = 0;
     U8* charyp = NULL;
+    U32 wpx = 0, wpy = 0;
     if(unicode == 10)
     {
         kghp->NextCharsX = 0;
@@ -487,7 +518,8 @@ public void DRXPutPixOneChar(DefGraph* kghp, U32 unicode, Pixl pix)
             kghp->NextCharsY += kghp->LineSZ;
         }
     }
-    U32 wpx = (U32)kghp->NextCharsX, wpy = (U32)kghp->NextCharsY;
+    wpx = (U32)kghp->NextCharsX;
+    wpy = (U32)kghp->NextCharsY;
 
     for(int hx = 0; hx < chhx; hx++)
     {
@@ -524,9 +556,13 @@ public void HalDefStringWrite(Char* buf)
     int chinx = 0;
     int chretnext = 0;
     U32 uc = 0;
-    DefGraph* kghp = HalGetDefGraphDataAddr();
-    Pixl pix = kghp->DefFontPX;
+    DefGraph* kghp = NULL;
+    Pixl pix = 0;
+
     IF_NULL_RETURN(buf);
+    
+    kghp = HalGetDefGraphDataAddr();
+    pix = kghp->DefFontPX;
     while(buf[chinx] != 0)
     {
         uc = Utf8ToUnicode((UTF8* )(&buf[chinx]), &chretnext);
@@ -587,9 +623,13 @@ private U64* GetVRamAddrInBank(void* ghpdev)
 
 private void BGADispNextBank(void* ghpdev)
 {
-    DefGraph* kghp = (DefGraph* )ghpdev;
-    U16 h = (U16)(kghp->Y * kghp->NextBank + 1);
-    U16 ofy = (U16)(kghp->Y *  (kghp->FvrmPhyAddr));
+    DefGraph* kghp = NULL;
+    U16 h = 0;
+    U16 ofy = 0;
+
+    kghp = (DefGraph*)ghpdev;
+    h = (U16)(kghp->Y * kghp->NextBank + 1);
+    ofy = (U16)(kghp->Y *  (kghp->FvrmPhyAddr));
     BGAWriteReg(VBE_DISPI_INDEX_VIRT_HEIGHT, h);
     BGAWriteReg(VBE_DISPI_INDEX_Y_OFFSET, ofy);
     kghp->CurrDispBank = kghp->FvrmPhyAddr;
@@ -603,12 +643,16 @@ private void BGADispNextBank(void* ghpdev)
 
 private void BGAFlush(void* ghpdev)
 {
-    DefGraph* kghp = (DefGraph* )ghpdev;
-
-    U64* s = (U64* )((UInt)kghp->FvrmPhyAddr);
-    U64* d = GetVRamAddrInBank(kghp); //(U64*)kghp->FramPhyAddr;
+    DefGraph* kghp = NULL;
+    U64* s = NULL;
+    U64* d = NULL;
     U64 i = 0, j = 0;
-    U64 e = kghp->X * kghp->Y * kghp->OnePixByte;
+    U64 e = 0;
+
+    kghp = (DefGraph*)ghpdev;
+    s = (U64*)((UInt)kghp->FvrmPhyAddr);
+    d = GetVRamAddrInBank(kghp); //(U64*)kghp->FramPhyAddr;
+    e = kghp->X * kghp->Y * kghp->OnePixByte;
     //U64 k=e/8;
     for(; i < e; i += 8)
     {
@@ -631,18 +675,21 @@ private Pixl BGAReadPix(void* ghpdev, UInt x, UInt y)
 
 private void BGAWritePix(void* ghpdev, Pixl pix, UInt x, UInt y)
 {
-    DefGraph* kghp = (DefGraph*)ghpdev;
-    U8* p24bas;
+    DefGraph* kghp = NULL;
+    U8* p24bas = NULL;
+    U32* phybas = NULL;
+    kghp = (DefGraph*)ghpdev;
+
     if(kghp->OnePixBits == 24)
     {
         U64 p24adr = (x + (y * kghp->X)) * 3;
-        p24bas = (U8* )((UInt)(p24adr + kghp->FvrmPhyAddr));
+        p24bas = (U8*)((UInt)(p24adr + kghp->FvrmPhyAddr));
         p24bas[0] = (U8)(pix);
         p24bas[1] = (U8)(pix >> 8);
         p24bas[2] = (U8)(pix >> 16);
         return;
     }
-    U32* phybas = (U32* )((UInt)kghp->FvrmPhyAddr);
+    phybas = (U32*)((UInt)kghp->FvrmPhyAddr);
     phybas[x + (y * kghp->X)] = pix;
     return;
 }
@@ -654,18 +701,20 @@ private Pixl BGADXReadPix(void* ghpdev, UInt x, UInt y)
 
 private void BGADXWritePix(void* ghpdev, Pixl pix, UInt x, UInt y)
 {
-    DefGraph* kghp = (DefGraph*)ghpdev;
-    U8* p24bas;
+    DefGraph* kghp = NULL;
+    U8* p24bas = NULL;
+    U32* phybas = NULL;
+    kghp = (DefGraph*)ghpdev;
     if(kghp->OnePixBits == 24)
     {
         U64 p24adr = (x + (y * kghp->X)) * 3 * kghp->CurrDispBank;
-        p24bas = (U8* )((UInt)(p24adr + kghp->FramPhyAddr));
+        p24bas = (U8*)((UInt)(p24adr + kghp->FramPhyAddr));
         p24bas[0] = (U8)(pix);
         p24bas[1] = (U8)(pix >> 8);
         p24bas[2] = (U8)(pix >> 16);
         return;
     }
-    U32* phybas = (U32* )((UInt)(kghp->FramPhyAddr + (kghp->X * kghp->Y * kghp->FvrmPhyAddr * kghp->CurrDispBank)));
+    phybas = (U32*)((UInt)(kghp->FramPhyAddr + (kghp->X * kghp->Y * kghp->FvrmPhyAddr * kghp->CurrDispBank)));
     phybas[x + (y * kghp->X)] = pix;
     return;
 }
@@ -696,11 +745,12 @@ private SInt BGASetXYOffset(void* ghpdev, UInt xoff, UInt yoff)
 
 private SInt BGAGetXY(void* ghpdev, UInt* rx, UInt* ry)
 {
+    U16 retx = 0, rety = 0;
     if(rx == NULL || ry == NULL)
     {
         return -1;
     }
-    U16 retx, rety;
+    
     retx = BGAReadReg(VBE_DISPI_INDEX_XRES);
     rety = BGAReadReg(VBE_DISPI_INDEX_YRES);
     *rx = (UInt)retx;
@@ -710,11 +760,12 @@ private SInt BGAGetXY(void* ghpdev, UInt* rx, UInt* ry)
 
 private SInt BGAGetVWH(void* ghpdev, UInt* rvwt, UInt* rvhi)
 {
+    U16 retwt = 0, rethi = 0;
+
     if(rvwt == NULL || rvhi == NULL)
     {
         return -1;
     }
-    U16 retwt, rethi;
     retwt = BGAReadReg(VBE_DISPI_INDEX_VIRT_WIDTH);
     rethi = BGAReadReg(VBE_DISPI_INDEX_VIRT_HEIGHT);
     *rvwt = (UInt)retwt;
@@ -724,11 +775,12 @@ private SInt BGAGetVWH(void* ghpdev, UInt* rvwt, UInt* rvhi)
 
 private SInt BGAGetXYOffset(void* ghpdev, UInt* rxoff, UInt* ryoff)
 {
+    U16 retxoff = 0, retyoff = 0;
+
     if(rxoff == NULL || ryoff == NULL)
     {
         return -1;
     }
-    U16 retxoff, retyoff;
     retxoff = BGAReadReg(VBE_DISPI_INDEX_X_OFFSET);
     retyoff = BGAReadReg(VBE_DISPI_INDEX_Y_OFFSET);
     *rxoff = (UInt)retxoff;
@@ -753,12 +805,17 @@ private SInt VBEIoCtrl(void* ghpdev, void* outp, UInt iocode)
 
 private void VBEFlush(void* ghpdev)
 {
-    DefGraph* kghp = (DefGraph* )ghpdev;
-
-    U64* s = (U64* )((UInt)kghp->FvrmPhyAddr);
-    U64* d = (U64* )((UInt)kghp->FramPhyAddr);
+    DefGraph* kghp = NULL;
+    U64* s = NULL;
+    U64* d = NULL;
     U64 i = 0, j = 0;
-    U64 e = kghp->X * kghp->Y * kghp->FvrmPhyAddr;
+    U64 e = 0;
+
+    kghp = (DefGraph*)ghpdev;
+    s = (U64*)((UInt)kghp->FvrmPhyAddr);
+    d = (U64*)((UInt)kghp->FramPhyAddr);
+    e = kghp->X * kghp->Y * kghp->FvrmPhyAddr;
+
     for(; i < e; i += 8)
     {
         d[j] = s[j];
@@ -779,8 +836,11 @@ private Pixl VBEReadPix(void* ghpdev, UInt x, UInt y)
 
 private void VBEWritePix(void* ghpdev, Pixl pix, UInt x, UInt y)
 {
-    DefGraph* kghp = (DefGraph* )ghpdev;
-    U8* p24bas;
+    DefGraph* kghp = NULL;
+    U8* p24bas = NULL;
+    U32* phybas = NULL;
+    kghp = (DefGraph*)ghpdev;
+
     if(kghp->OnePixBits == 24)
     {
         U64 p24adr = (x + (y * kghp->X)) * 3;
@@ -790,7 +850,7 @@ private void VBEWritePix(void* ghpdev, Pixl pix, UInt x, UInt y)
         p24bas[2] = (U8)(pix >> 16);
         return;
     }
-    U32* phybas = (U32* )((UInt)kghp->FvrmPhyAddr);
+    phybas = (U32*)((UInt)kghp->FvrmPhyAddr);
     phybas[x + (y * kghp->X)] = pix;
     return;
 }
@@ -802,18 +862,21 @@ private Pixl VBDXReadPix(void* ghpdev, UInt x, UInt y)
 
 private void VBEDXWritePix(void* ghpdev, Pixl pix, UInt x, UInt y)
 {
-    DefGraph* kghp = (DefGraph* )ghpdev;
-    U8* p24bas;
+    DefGraph* kghp = NULL;
+    U8* p24bas = NULL;
+    U32* phybas = NULL;
+    kghp = (DefGraph*)ghpdev;
+
     if(kghp->OnePixBits == 24)
     {
-        U64 p24adr = (x + (y*  kghp->X))*  3;
+        U64 p24adr = (x + (y * kghp->X))*  3;
         p24bas = (U8* )((UInt)(p24adr + kghp->FramPhyAddr));
         p24bas[0] = (U8)(pix);
         p24bas[1] = (U8)(pix >> 8);
         p24bas[2] = (U8)(pix >> 16);
         return;
     }
-    U32* phybas = (U32* )((UInt)kghp->FramPhyAddr);
+    phybas = (U32* )((UInt)kghp->FramPhyAddr);
     phybas[x + (y*  kghp->X)] = pix;
     return;
 }
