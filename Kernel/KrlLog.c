@@ -15,7 +15,7 @@ private Char* FmtNumber(Char* str, UInt n, SInt base)
 	Char strbuf[36];
 	p = &strbuf[36];
 	*--p = 0;
-	if (n == 0)
+	if(n == 0)
 	{
 		*--p = '0';
 	}
@@ -24,9 +24,9 @@ private Char* FmtNumber(Char* str, UInt n, SInt base)
 		do
 		{
 			*--p = "0123456789abcdef"[n % base];
-		} while (n /= base);
+		}while (n /= base);
 	}
-	while (*p != 0)
+	while(*p != 0)
 	{
 		*str++ = *p++;
 	}
